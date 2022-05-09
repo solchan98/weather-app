@@ -52,7 +52,7 @@ interface IClouds {
 
 export interface ICurrentWeather {
   coord: ICoord,
-  weather: IWeather,
+  weather: IWeather[],
   main: IMain,
   wind: IWind,
   clouds: IClouds,
