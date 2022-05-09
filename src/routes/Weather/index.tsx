@@ -1,12 +1,12 @@
-import axios from 'axios';
 import dayjs from 'dayjs';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { CloudWind, DegreesCelCius, Marker, RainDrop } from '../../assets/svgs/weather';
 import { currentDateState, currentWeatherState, fiveDayWeatherState } from '../../recoil/weather/atoms';
 import { fiveDateListValue, todayWeatherListValue } from '../../recoil/weather/selector';
 import { getCurrentWeather, getFiveDayWeather} from '../../services/weather';
 import styles from './Weather.module.scss';
+import WeatherIcon from './WeatherIcon';
 
 
 const BASE_LOCATION = { // YONGIN
@@ -26,10 +26,10 @@ const Weather = () => {
   useEffect(() => {
     const getInitData = async () => {
       const currentWeatherRes = await getCurrentWeather(BASE_LOCATION);
-      const fiveDayWeatherRes = getFiveDayWeather(BASE_LOCATION);
+      const fiveDayWeatherRes = await getFiveDayWeather(BASE_LOCATION);
       setCurrentWeather(currentWeatherRes.data);
-      setFiveDayWeather((await fiveDayWeatherRes).data);
-    }
+      setFiveDayWeather(fiveDayWeatherRes.data);
+    };
     getInitData();
   }, [setCurrentWeather, setFiveDayWeather]);
 
@@ -46,7 +46,7 @@ const Weather = () => {
       </header>
       <main className={styles.main}>
         <div className={styles.weatherIcon}>
-          <CloudWind />
+          <WeatherIcon weatertType={currentWeather.weather[0].main} />
         </div>
         <h3>{currentWeather.weather[0].description}</h3>
         <div className={styles.temperatureInfo}>
@@ -73,11 +73,11 @@ const Weather = () => {
             </li>)}
         </ul>
         <ul>
-          {todayWeatherList.map((value, index) => 
+          { todayWeatherList.length !== 0 && todayWeatherList.map((value, index) => 
             <li key={`today_time_${index + 1}`}>
               <div className={styles.dayWeatherItem}>
                 <time>{dayjs(value.dt_txt).format('H:mm A')}</time>
-                <CloudWind />
+                <WeatherIcon weatertType={value.weather[0].main} />
                 <span>
                   {(value.main.temp - 273.15).toFixed(0)}
                   <DegreesCelCius className={styles.degrees}/>

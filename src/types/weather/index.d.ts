@@ -15,7 +15,7 @@ interface ICoord {
 interface IList {
   dt: number,
   main: IMain,
-  weatherList: IWeather[],
+  weather: IWeather[],
   clouds: IClouds,
   wind: IWind,
   visibility: number,

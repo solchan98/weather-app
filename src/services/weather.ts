@@ -2,8 +2,6 @@ import axios from "axios"
 // eslint-disable-next-line import/extensions
 import { ICurrentWeather, IWeatherList } from "../types/weather";
 
-let LAT = 37.2284122;
-let LON = 127.1892561;
 const API_KEY = '6067a6c0adf35a4ee4f60e194a087744';
 
 interface Params {

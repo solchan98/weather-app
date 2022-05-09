@@ -5,9 +5,20 @@ import { IWeatherList } from "../../types/weather";
 
 const INIT_ICURRENTWEATHER = {
   name: '',
-  weather: [{description: ''}],
+  weather: [{description: '', main: ''}],
   main: { temp: 274, humidity: 0 },
   wind: { speed: 0 },
+};
+
+const INIT_FIVE_DAY_WEATHER = {
+  list: [{
+      main: { temp: 274, humidity: 0 },
+      weather: [{
+        main: '',
+        description: ''
+      }],
+      dt_txt: ''
+    }]
 };
 
 export const currentWeatherState = atom({
@@ -18,7 +29,7 @@ export const currentWeatherState = atom({
 
 export const fiveDayWeatherState = atom({
   key: 'fiveDayWeatherState',
-  default: {} as IWeatherList,
+  default: INIT_FIVE_DAY_WEATHER
 });
 
 export const currentDateState = atom({
