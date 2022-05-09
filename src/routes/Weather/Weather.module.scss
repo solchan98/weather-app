@@ -1,1 +1,172 @@
+section {
+  width: 360px;
+  height: 720px;
+  // background-color: #46faeb;
+  background: linear-gradient(to top right, #46faeb, #d8f7f4);
+  border-radius: 45px;
+  box-shadow: 2px 2px 6px 3px rgba(#646e6e, 20%);
 
+  header {
+    display: flex;
+    width: inherit;
+    padding: 20px 30px;
+
+    .marker {
+      width: 32px;
+    }
+
+    .locationBtn {
+      display: inline-block;
+      font-weight: 700;
+      text-shadow: -0.5px 0.5px 1px rgb(212, 212, 212);
+      color: #4e4c4c;
+      cursor: pointer;
+    }
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: inherit;
+    height: 50%;
+    // background-color: bisque;
+
+    h3 {
+      margin-top: 30px;
+      font-size: 22px;
+      font-weight: 500;
+      color: #888787;
+    }
+  }
+
+  .weatherIcon {
+    filter: drop-shadow(-20px 20px 50px);
+
+    > svg {
+      width: 140px;
+      color: #A8A8A8;
+      transition: 0.5s;
+
+      &:hover {
+        margin-top: -10px;
+      }
+    }
+  }
+
+  .temperatureInfo {
+    display: flex;
+    justify-content: center;
+
+    span {
+      display: flex;
+      font-size: 64px;
+      font-weight: 400;
+      text-shadow: -1px -1px 1px #000;
+
+      svg {
+        width: 30px;
+        margin-top: -10px;
+      }
+    }
+  }
+
+  .subWeatherInfo {
+    display: flex;
+    justify-content: space-around;
+    width: 180px;
+    padding-top: 10px;
+
+    .subInfoItem {
+      display: flex;
+      width: auto;
+      height: 24px;
+      line-height: 24px;
+      color: #656565;
+
+      svg {
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+      }
+    }
+  }
+
+  footer {
+    width: inherit;
+    height: 160px;
+
+    .dayList {
+      height: 50px;
+      line-height: 24px;
+      list-style: none;
+
+      li > div {
+        width: 100px;
+        height: 30px;
+        overflow: hidden;
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 30px;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 12px;
+        color: rgb(0, 0, 0);
+      }
+    }
+
+    ul {
+      display: flex;
+      height: 180px;
+      padding: 0;
+      margin: 0 10px;
+      overflow-x: scroll;
+      list-style: none;
+
+      li {
+        margin: 0 10px;
+        opacity: 0.5;
+      }
+
+      .dayWeatherItem {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100px;
+        height: 160px;
+        background-color: #6de9e4;
+        border-radius: 15px;
+        transition: 0.3s;
+
+        &:hover {
+          margin-top: 10px;
+        }
+
+        time {
+          margin: 10px 0;
+          font-size: 14px;
+          font-weight: 700;
+        }
+
+        svg {
+          width: 64px;
+        }
+
+        span {
+          display: flex;
+          margin: 10px 0;
+          font-size: 32px;
+
+          svg {
+            width: 14px;
+            margin-top: -10px;
+          }
+        }
+      }
+    }
+
+    ul::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
