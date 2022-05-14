@@ -39,7 +39,7 @@ const Weather = () => {
   };
 
   return(
-    <section className={styles.section}>
+    <section className={styles.mainSec}>
       <header className={styles.header}>
         <Marker className={styles.marker} />
         <h3 className={styles.locationBtn} >{currentWeather.name}</h3>
