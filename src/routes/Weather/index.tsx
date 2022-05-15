@@ -76,7 +76,7 @@ const Weather = () => {
           { todayWeatherList.length !== 0 && todayWeatherList.map((value, index) => 
             <li key={`today_time_${index + 1}`}>
               <div className={styles.dayWeatherItem}>
-                <time>{dayjs(value.dt_txt).format('H:mm A')}</time>
+                <time>{dayjs(value.dt_txt).add(9, 'hour').format('H:mm A')}</time>
                 <WeatherIcon weatertType={value.weather[0].main} />
                 <span>
                   {(value.main.temp - 273.15).toFixed(0)}
