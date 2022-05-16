@@ -1,42 +1,40 @@
-import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { CloudWind, DegreesCelCius, Marker, RainDrop } from '../../assets/svgs/weather';
 import { currentDateState, currentWeatherState, fiveDayWeatherState } from '../../recoil/weather/atoms';
-import { fiveDateListValue, todayWeatherListValue } from '../../recoil/weather/selector';
-import { getCurrentWeather, getFiveDayWeather} from '../../services/weather';
+import { getCurrentWeather } from '../../services/weather';
 import styles from './Weather.module.scss';
 import WeatherIcon from './WeatherIcon';
 
-
-const BASE_LOCATION = { // YONGIN
-  lat: 37.2284122,
-  lon: 127.1892561,
+interface ILocation {
+  latitude: number,
+  longitude: number,
 }
 
 const Weather = () => {
 
-  const [currentWeather, setCurrentWeather] = useRecoilState(currentWeatherState);
-  const [, setFiveDayWeather] = useRecoilState(fiveDayWeatherState);
-  const todayWeatherList = useRecoilValue(todayWeatherListValue);
-  const fiveDateList = useRecoilValue(fiveDateListValue);
-  const [curDate, setCurDate] = useRecoilState(currentDateState);
-  const [selecteDate, setSelectDate] = useState(curDate);
+  const [location, setLocation] = useState<ILocation>({} as ILocation);
 
   useEffect(() => {
-    const getInitData = async () => {
-      const currentWeatherRes = await getCurrentWeather(BASE_LOCATION);
-      const fiveDayWeatherRes = await getFiveDayWeather(BASE_LOCATION);
-      setCurrentWeather(currentWeatherRes.data);
-      setFiveDayWeather(fiveDayWeatherRes.data);
-    };
-    getInitData();
-  }, [setCurrentWeather, setFiveDayWeather]);
+    navigator.geolocation.getCurrentPosition((positon: GeolocationPosition) => {
+      const latitude = positon.coords.latitude || 37.2221658;
+      const longitude = positon.coords.longitude || 127.1875067;
+      setLocation({ latitude, longitude });
+    });
+  }, []);
 
-  const onDateClick = (date: string) => {
-    setSelectDate(date);
-    setCurDate(date);
-  };
+  const [currentWeather, setCurrentWeather] = useRecoilState(currentWeatherState);
+
+  useEffect(() => {
+    if(location.latitude && location.longitude) {
+      const getInitData = async () => {
+        const currentWeatherRes = await getCurrentWeather(location);
+        setCurrentWeather(currentWeatherRes.data);
+      };
+      getInitData();
+    }
+  }, [location, setCurrentWeather]);
+
 
   return(
     <section className={styles.mainSec}>
@@ -63,29 +61,9 @@ const Weather = () => {
           </span>
         </div>
       </main>
-      <footer >
-        <ul className={styles.dayList}>
-          {fiveDateList.map((date, index) => 
-            <li key={`date_${index + 1}`}>
-              <button type='button' style={{opacity: !dayjs(date).isSame(selecteDate) ? 0.5 : 1}} onClick={() => onDateClick(date)}>
-                {dayjs(date).format('D MMMM')}
-              </button>
-            </li>)}
-        </ul>
-        <ul>
-          { todayWeatherList.length !== 0 && todayWeatherList.map((value, index) => 
-            <li key={`today_time_${index + 1}`}>
-              <div className={styles.dayWeatherItem}>
-                <time>{dayjs(value.dt_txt).add(9, 'hour').format('H:mm A')}</time>
-                <WeatherIcon weatertType={value.weather[0].main} />
-                <span>
-                  {(value.main.temp - 273.15).toFixed(0)}
-                  <DegreesCelCius className={styles.degrees}/>
-                </span>
-              </div>
-            </li>)}
-        </ul>
-      </footer>
+      {/* <footer>
+        <FiveDayList />
+      </footer> */}
     </section>
   );
 };

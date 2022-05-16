@@ -1,7 +1,5 @@
 import dayjs from "dayjs";
 import { atom } from "recoil";
-// eslint-disable-next-line import/extensions
-import { IWeatherList } from "../../types/weather";
 
 const INIT_ICURRENTWEATHER = {
   name: '',

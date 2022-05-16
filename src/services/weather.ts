@@ -1,16 +1,16 @@
 import axios from "axios";
 import { ICurrentWeather, IWeatherList } from "../types/weather/index.d";
 
-interface Params {
-  lat: number,
-  lon: number,
+interface ILocation {
+  latitude: number,
+  longitude: number,
 }
 
 
-const GET_CURRENT_WEATHER_URL = (params: Params) => `https://api.openweathermap.org/data/2.5/weather?lat=${params.lat}&lon=${params.lon}&appid=${process.env.REACT_APP_WEATHER_KEY}`;
-const GET_FIVE_DAY_WEATHER_URL = (params: Params) => `https://api.openweathermap.org/data/2.5/forecast?lat=${params.lat}&lon=${params.lon}&appid=6067a6c0adf35a4ee4f60e194a087744`;
+const GET_CURRENT_WEATHER_URL = (params: ILocation) => `https://api.openweathermap.org/data/2.5/weather?lat=${params.latitude}&lon=${params.longitude}&appid=${process.env.REACT_APP_WEATHER_KEY}`;
+const GET_FIVE_DAY_WEATHER_URL = (params: ILocation) => `https://api.openweathermap.org/data/2.5/forecast?lat=${params.latitude}&lon=${params.longitude}&appid=6067a6c0adf35a4ee4f60e194a087744`;
 
 
-export const getCurrentWeather = (parms: Params) => axios.get<ICurrentWeather>(GET_CURRENT_WEATHER_URL(parms));
+export const getCurrentWeather = (parms: ILocation) => axios.get<ICurrentWeather>(GET_CURRENT_WEATHER_URL(parms));
 
-export const getFiveDayWeather = (params: Params) => axios.get<IWeatherList>(GET_FIVE_DAY_WEATHER_URL(params));
+export const getFiveDayWeather = (params: ILocation) => axios.get<IWeatherList>(GET_FIVE_DAY_WEATHER_URL(params));
