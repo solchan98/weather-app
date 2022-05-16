@@ -3,10 +3,11 @@ import { useQuery } from 'react-query';
 
 import styles from './Weather.module.scss';
 import WeatherIcon from './WeatherIcon';
+import { ILocation } from '../../types/location/index.d';
 import { ICurrentWeather } from '../../types/weather/index.d';
 import { getCurrentWeather } from '../../services/weather';
 import { CloudWind, DegreesCelCius, Marker, RainDrop } from '../../assets/svgs/weather';
-import { ILocation } from '../../types/location/index.d';
+import FiveDayList from './fiveDayList/fiveDayList';
 
 const Weather = () => {
 
@@ -26,7 +27,7 @@ const Weather = () => {
     });
   }, []);
 
-  if(!data) return(<section className={styles.mainSec} />);
+  if(!data) return(<section className={styles.mainSec}>...로딩중</section>);
 
   return(
     <section className={styles.mainSec}>
@@ -53,6 +54,9 @@ const Weather = () => {
           </span>
         </div>
       </main>
+      <footer>
+        <FiveDayList location={location}/>
+      </footer>
     </section>
   );
 };

@@ -8,7 +8,7 @@ interface ILocation {
 
 
 const GET_CURRENT_WEATHER_URL = (params: ILocation) => `https://api.openweathermap.org/data/2.5/weather?lat=${params.latitude}&lon=${params.longitude}&appid=${process.env.REACT_APP_WEATHER_KEY}`;
-const GET_FIVE_DAY_WEATHER_URL = (params: ILocation) => `https://api.openweathermap.org/data/2.5/forecast?lat=${params.latitude}&lon=${params.longitude}&appid=6067a6c0adf35a4ee4f60e194a087744`;
+const GET_FIVE_DAY_WEATHER_URL = (params: ILocation) => `https://api.openweathermap.org/data/2.5/forecast?lat=${params.latitude}&lon=${params.longitude}&appid=${process.env.REACT_APP_WEATHER_KEY}`;
 
 
 export const getCurrentWeather = (parms: ILocation) => axios.get<ICurrentWeather>(GET_CURRENT_WEATHER_URL(parms));
