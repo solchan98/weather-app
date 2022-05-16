@@ -1,8 +1,5 @@
-import axios from "axios"
-// eslint-disable-next-line import/extensions
-import { ICurrentWeather, IWeatherList } from "../types/weather";
-
-const API_KEY = '6067a6c0adf35a4ee4f60e194a087744';
+import axios from "axios";
+import { ICurrentWeather, IWeatherList } from "../types/weather/index.d";
 
 interface Params {
   lat: number,
@@ -10,7 +7,7 @@ interface Params {
 }
 
 
-const GET_CURRENT_WEATHER_URL = (params: Params) => `https://api.openweathermap.org/data/2.5/weather?lat=${params.lat}&lon=${params.lon}&appid=${API_KEY}`;
+const GET_CURRENT_WEATHER_URL = (params: Params) => `https://api.openweathermap.org/data/2.5/weather?lat=${params.lat}&lon=${params.lon}&appid=${process.env.REACT_APP_WEATHER_KEY}`;
 const GET_FIVE_DAY_WEATHER_URL = (params: Params) => `https://api.openweathermap.org/data/2.5/forecast?lat=${params.lat}&lon=${params.lon}&appid=6067a6c0adf35a4ee4f60e194a087744`;
 
 
