@@ -1,19 +1,22 @@
 import { useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { CloudWind, DegreesCelCius, Marker, RainDrop } from '../../assets/svgs/weather';
-import { currentDateState, currentWeatherState, fiveDayWeatherState } from '../../recoil/weather/atoms';
-import { getCurrentWeather } from '../../services/weather';
+import { useQuery } from 'react-query';
+
 import styles from './Weather.module.scss';
 import WeatherIcon from './WeatherIcon';
-
-interface ILocation {
-  latitude: number,
-  longitude: number,
-}
+import { ICurrentWeather } from '../../types/weather/index.d';
+import { getCurrentWeather } from '../../services/weather';
+import { CloudWind, DegreesCelCius, Marker, RainDrop } from '../../assets/svgs/weather';
+import { ILocation } from '../../types/location/index.d';
 
 const Weather = () => {
 
   const [location, setLocation] = useState<ILocation>({} as ILocation);
+
+  const { data } = useQuery<ICurrentWeather, Error>(
+    'currentWeather',
+    () => getCurrentWeather(location).then(res => res.data),
+    { enabled: !!location.latitude }
+  );
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((positon: GeolocationPosition) => {
@@ -23,47 +26,33 @@ const Weather = () => {
     });
   }, []);
 
-  const [currentWeather, setCurrentWeather] = useRecoilState(currentWeatherState);
-
-  useEffect(() => {
-    if(location.latitude && location.longitude) {
-      const getInitData = async () => {
-        const currentWeatherRes = await getCurrentWeather(location);
-        setCurrentWeather(currentWeatherRes.data);
-      };
-      getInitData();
-    }
-  }, [location, setCurrentWeather]);
-
+  if(!data) return(<section className={styles.mainSec} />);
 
   return(
     <section className={styles.mainSec}>
       <header className={styles.header}>
         <Marker className={styles.marker} />
-        <h3 className={styles.locationBtn} >{currentWeather.name}</h3>
+        <h3 className={styles.locationBtn} >{data.name}</h3>
       </header>
       <main className={styles.main}>
         <div className={styles.weatherIcon}>
-          <WeatherIcon weatertType={currentWeather.weather[0].main} />
+          <WeatherIcon weatertType={data.weather[0].main} />
         </div>
-        <h3>{currentWeather.weather[0].description}</h3>
+        <h3>{data.weather[0].description}</h3>
         <div className={styles.temperatureInfo}>
-          <span>{(currentWeather.main.temp - 273.15).toFixed(0)}<DegreesCelCius className={styles.degrees}/></span>
+          <span>{(data.main.temp - 273.15).toFixed(0)}<DegreesCelCius className={styles.degrees}/></span>
         </div>
         <div className={styles.subWeatherInfo}>
           <span className={styles.subInfoItem}>
             <CloudWind />
-            {`${(currentWeather.wind.speed * 1.609344).toFixed(1)}km/h`}
+            {`${(data.wind.speed * 1.609344).toFixed(2)}km/h`}
           </span>
           <span className={styles.subInfoItem}>
             <RainDrop />
-            {`${currentWeather.main.humidity}%`}
+            {`${data.main.humidity}%`}
           </span>
         </div>
       </main>
-      {/* <footer>
-        <FiveDayList />
-      </footer> */}
     </section>
   );
 };
